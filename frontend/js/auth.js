@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     showAlert('Login successful! Redirecting...', 'success');
                     localStorage.setItem('user', JSON.stringify(data.user));
                     setTimeout(() => {
-                        window.location.href = 'index.html';
+                        window.location.href = 'calculator.html';
                     }, 1500);
                 } else {
                     showAlert(data.error || 'Invalid credentials', 'error');

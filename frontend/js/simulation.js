@@ -33,7 +33,7 @@ function renderResults() {
     const rawParams = localStorage.getItem('simulationParams');
     if (!rawParams) {
         alert("No active simulation state detected. Redirecting to initialization dashboard.");
-        window.location.href = 'index.html';
+        window.location.href = 'calculator.html';
         return;
     }
 
