@@ -3,170 +3,207 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Scientific Calculator</title>
+<title>Premium Scientific Calculator</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;}
-body{display:flex;justify-content:center;align-items:center;min-height:100vh;background:linear-gradient(135deg,#667eea 0%,#764ba2 50%,#f093fb 100%);font-family:'Inter',sans-serif;padding:20px;}
+body{display:flex;justify-content:center;align-items:center;min-height:100vh;background:linear-gradient(135deg,#667eea 0%,#764ba2 50%,#f093fb 100%);font-family:"Inter",sans-serif;padding:20px;position:relative;overflow:hidden;}
+body::before{content:"";position:absolute;width:100%;height:100%;background-image:radial-gradient(circle at 20% 50%,rgba(255,255,255,0.1) 0%,transparent 50%),radial-gradient(circle at 80% 80%,rgba(255,255,255,0.1) 0%,transparent 50%),radial-gradient(circle at 40% 20%,rgba(255,255,255,0.1) 0%,transparent 50%);animation:float 20s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-20px) scale(1.05);}}
 .back-btn{position:fixed;top:20px;left:20px;background:rgba(255,255,255,0.2);color:#fff;border:1px solid rgba(255,255,255,0.4);border-radius:12px;padding:10px 18px;font-size:0.9em;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:6px;backdrop-filter:blur(10px);transition:all 0.3s;z-index:10;}
 .back-btn:hover{background:rgba(255,255,255,0.35);transform:translateY(-2px);}
-.calc{width:100%;max-width:420px;background:rgba(255,255,255,0.97);padding:28px;border-radius:28px;box-shadow:0 30px 80px rgba(0,0,0,0.3);position:relative;z-index:1;}
-.header{text-align:center;margin-bottom:20px;}
-.header h1{font-size:1.7em;font-weight:700;background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.header p{font-size:0.85em;color:#999;margin-top:3px;}
-.display{background:linear-gradient(135deg,#f0f4ff,#dde4f5);border-radius:18px;padding:20px;margin-bottom:20px;min-height:110px;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-end;box-shadow:inset 0 2px 8px rgba(0,0,0,0.08);}
-.expr{color:#888;font-size:1em;min-height:22px;word-break:break-all;text-align:right;}
-.res{color:#1a1a1a;font-size:2.8em;font-weight:700;word-break:break-all;text-align:right;line-height:1.1;}
-.btns{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
-button{padding:20px 8px;font-size:1em;font-weight:600;border:none;border-radius:14px;cursor:pointer;transition:all 0.15s ease;user-select:none;}
-button:hover{transform:translateY(-2px);filter:brightness(1.08);}
-button:active{transform:translateY(1px);filter:brightness(0.95);}
-.num{background:#f0f0f5;color:#1a1a1a;font-size:1.4em;font-weight:700;box-shadow:0 3px 8px rgba(0,0,0,0.08);}
-.op{background:linear-gradient(145deg,#667eea,#5568d3);color:#fff;font-size:1.3em;box-shadow:0 3px 10px rgba(99,102,241,0.35);}
-.fn{background:linear-gradient(145deg,#764ba2,#66428a);color:#fff;font-size:0.95em;box-shadow:0 3px 10px rgba(118,75,162,0.35);}
-.clr{background:linear-gradient(145deg,#ff6b6b,#ee5a52);color:#fff;font-weight:700;box-shadow:0 3px 10px rgba(255,107,107,0.4);}
-.eq{background:linear-gradient(145deg,#51cf66,#40c057);color:#fff;font-size:1.6em;grid-row:span 2;font-weight:700;box-shadow:0 4px 15px rgba(81,207,102,0.45);}
-@media(max-width:480px){.calc{padding:18px;}.res{font-size:2em;}button{padding:16px 6px;font-size:0.9em;}}
+.calculator{width:100%;max-width:450px;background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);padding:30px;border-radius:30px;box-shadow:0 30px 90px rgba(0,0,0,0.3),0 0 0 1px rgba(255,255,255,0.5),inset 0 1px 0 rgba(255,255,255,0.9);position:relative;z-index:1;animation:slideIn 0.6s cubic-bezier(0.68,-0.55,0.265,1.55);}
+@keyframes slideIn{from{opacity:0;transform:translateY(50px) scale(0.9);}to{opacity:1;transform:translateY(0) scale(1);}}
+.header{text-align:center;margin-bottom:25px;}
+.header h1{font-size:1.8em;font-weight:700;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:5px;}
+.header p{font-size:0.9em;color:#888;font-weight:400;}
+.display-container{background:linear-gradient(135deg,#f5f7fa 0%,#c3cfe2 100%);border-radius:20px;padding:25px;margin-bottom:25px;min-height:140px;box-shadow:inset 0 2px 10px rgba(0,0,0,0.1),0 5px 20px rgba(0,0,0,0.05);position:relative;overflow:hidden;}
+.display-expression{color:#666;font-size:1.3em;font-weight:500;text-align:right;min-height:30px;word-wrap:break-word;margin-bottom:10px;position:relative;z-index:1;}
+.display-result{color:#1a1a1a;font-size:3em;font-weight:700;text-align:right;word-wrap:break-word;position:relative;z-index:1;}
+.buttons{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;}
+button{padding:22px 10px;font-size:1.1em;font-weight:600;border:none;border-radius:15px;cursor:pointer;background:linear-gradient(145deg,#ffffff,#f0f0f0);color:#333;transition:all 0.3s cubic-bezier(0.68,-0.55,0.265,1.55);box-shadow:0 4px 15px rgba(0,0,0,0.1),inset 0 1px 0 rgba(255,255,255,0.8);user-select:none;position:relative;overflow:hidden;}
+button:hover{transform:translateY(-3px) scale(1.05);box-shadow:0 8px 25px rgba(0,0,0,0.15),inset 0 1px 0 rgba(255,255,255,0.8);}
+button:active{transform:translateY(1px) scale(0.98);}
+.num{background:linear-gradient(145deg,#ffffff,#f5f5f5);color:#1a1a1a;font-size:1.5em;font-weight:700;}
+.operator{background:linear-gradient(145deg,#667eea,#5568d3);color:#fff;font-size:1.4em;}
+.operator:hover{background:linear-gradient(145deg,#7688f0,#667eea);}
+.function{background:linear-gradient(145deg,#764ba2,#66428a);color:#fff;font-size:1em;}
+.function:hover{background:linear-gradient(145deg,#8659b5,#764ba2);}
+.clear{background:linear-gradient(145deg,#ff6b6b,#ee5a52);color:#fff;font-weight:700;}
+.clear:hover{background:linear-gradient(145deg,#ff7b7b,#ff6b6b);}
+.equals{background:linear-gradient(145deg,#51cf66,#40c057);color:#fff;font-size:1.8em;grid-row:span 2;font-weight:700;animation:pulse 2s infinite;}
+.equals:hover{background:linear-gradient(145deg,#63e679,#51cf66);}
+@keyframes pulse{0%,100%{box-shadow:0 4px 15px rgba(81,207,102,0.4);}50%{box-shadow:0 4px 25px rgba(81,207,102,0.8);}}
+.error{animation:shake 0.4s ease-in-out;color:#ff6b6b !important;}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-10px);}75%{transform:translateX(10px);}}
+@media(max-width:480px){.calculator{max-width:100%;padding:20px;}button{padding:18px 8px;font-size:1em;}.display-result{font-size:2.2em;}.header h1{font-size:1.5em;}}
 </style>
 </head>
 <body>
 <a class="back-btn" href="login.html">
   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-  Back
+  Back to Login
 </a>
-<div class="calc">
+<div class="calculator">
   <div class="header"><h1>Scientific Calculator</h1><p>Premium Edition</p></div>
-  <div class="display">
-    <div class="expr" id="expr"></div>
-    <div class="res" id="res">0</div>
+  <div class="display-container">
+    <div class="display-expression" id="expression"></div>
+    <div class="display-result" id="result">0</div>
   </div>
-  <div class="btns">
-    <button class="clr" onclick="C.ac()">AC</button>
-    <button class="fn"  onclick="C.sign()">+/-</button>
-    <button class="fn"  onclick="C.pct()">%</button>
-    <button class="fn"  onclick="C.del()">DEL</button>
-    <button class="op"  onclick="C.op('/')">&#247;</button>
-    <button class="fn"  onclick="C.fn('sin')">sin</button>
-    <button class="fn"  onclick="C.fn('cos')">cos</button>
-    <button class="fn"  onclick="C.fn('tan')">tan</button>
-    <button class="fn"  onclick="C.fn('log')">log</button>
-    <button class="op"  onclick="C.op('*')">&#215;</button>
-    <button class="fn"  onclick="C.fn('ln')">ln</button>
-    <button class="fn"  onclick="C.pow2()">x&#178;</button>
-    <button class="fn"  onclick="C.fn('sqrt')">&#8730;</button>
-    <button class="fn"  onclick="C.fact()">x!</button>
-    <button class="op"  onclick="C.op('-')">&#8722;</button>
-    <button class="num" onclick="C.num('7')">7</button>
-    <button class="num" onclick="C.num('8')">8</button>
-    <button class="num" onclick="C.num('9')">9</button>
-    <button class="fn"  onclick="C.br('(')">(</button>
-    <button class="op"  onclick="C.op('+')">+</button>
-    <button class="num" onclick="C.num('4')">4</button>
-    <button class="num" onclick="C.num('5')">5</button>
-    <button class="num" onclick="C.num('6')">6</button>
-    <button class="fn"  onclick="C.br(')')">)</button>
-    <button class="fn"  onclick="C.cst('pi')">&#960;</button>
-    <button class="num" onclick="C.num('1')">1</button>
-    <button class="num" onclick="C.num('2')">2</button>
-    <button class="num" onclick="C.num('3')">3</button>
-    <button class="fn"  onclick="C.xexp()">EXP</button>
-    <button class="eq"  onclick="C.calc()">=</button>
-    <button class="num" onclick="C.num('0')" style="grid-column:span 2">0</button>
-    <button class="num" onclick="C.num('.')">.</button>
-    <button class="fn"  onclick="C.cst('e')">e</button>
+  <div class="buttons">
+    <button class="clear" onclick="calc.clearAll()">AC</button>
+    <button class="function" onclick="calc.toggleSign()">+/-</button>
+    <button class="function" onclick="calc.addPercent()">%</button>
+    <button class="function" onclick="calc.backspace()">DEL</button>
+    <button class="operator" onclick="calc.addOperator('/')">&#247;</button>
+    <button class="function" onclick="calc.addFunction('sin')">sin</button>
+    <button class="function" onclick="calc.addFunction('cos')">cos</button>
+    <button class="function" onclick="calc.addFunction('tan')">tan</button>
+    <button class="function" onclick="calc.addFunction('log')">log</button>
+    <button class="operator" onclick="calc.addOperator('*')">&#215;</button>
+    <button class="function" onclick="calc.addFunction('ln')">ln</button>
+    <button class="function" onclick="calc.addPower()">x&#178;</button>
+    <button class="function" onclick="calc.addFunction('sqrt')">&#8730;</button>
+    <button class="function" onclick="calc.addFactorial()">x!</button>
+    <button class="operator" onclick="calc.addOperator('-')">&#8722;</button>
+    <button class="num" onclick="calc.addNumber('7')">7</button>
+    <button class="num" onclick="calc.addNumber('8')">8</button>
+    <button class="num" onclick="calc.addNumber('9')">9</button>
+    <button class="function" onclick="calc.addBracket('(')">(</button>
+    <button class="operator" onclick="calc.addOperator('+')">+</button>
+    <button class="num" onclick="calc.addNumber('4')">4</button>
+    <button class="num" onclick="calc.addNumber('5')">5</button>
+    <button class="num" onclick="calc.addNumber('6')">6</button>
+    <button class="function" onclick="calc.addBracket(')')">)</button>
+    <button class="function" onclick="calc.addConstant('pi')">&#960;</button>
+    <button class="num" onclick="calc.addNumber('1')">1</button>
+    <button class="num" onclick="calc.addNumber('2')">2</button>
+    <button class="num" onclick="calc.addNumber('3')">3</button>
+    <button class="function" onclick="calc.addExp()">EXP</button>
+    <button class="equals" onclick="calc.calculate()">=</button>
+    <button class="num" onclick="calc.addNumber('0')" style="grid-column:span 2">0</button>
+    <button class="num" onclick="calc.addNumber('.')">.</button>
+    <button class="function" onclick="calc.addConstant('e')">e</button>
   </div>
 </div>
 <script>
-var exEl=document.getElementById('expr'),rsEl=document.getElementById('res'),inp='',ans=0,fresh=false;
-function draw(){exEl.textContent=inp;rsEl.textContent=inp||'0';}
-var C={
-  ac:function(){inp='';fresh=false;exEl.textContent='';rsEl.textContent='0';},
-  del:function(){
-    if(fresh){C.ac();return;}
-    var ps=['sin(','cos(','tan(','log(','ln(','sqrt('];
-    for(var i=0;i<ps.length;i++){if(inp.endsWith(ps[i])){inp=inp.slice(0,-ps[i].length);draw();return;}}
-    inp=inp.slice(0,-1);draw();
-  },
-  num:function(n){
-    if(fresh){inp='';exEl.textContent='';fresh=false;}
-    if(n==='.'){var last=inp.split(/[\+\-\*\/\(\)]/).pop();if(last.indexOf('.')>=0)return;}
-    inp+=n;draw();
-  },
-  op:function(o){
-    if(fresh){inp=ans.toString();exEl.textContent='';fresh=false;}
-    if(!inp){if(o==='-'){inp='-';draw();}return;}
-    var lc=inp.slice(-1);
-    inp=['+','-','*','/'].indexOf(lc)>=0?inp.slice(0,-1)+o:inp+o;
-    draw();
-  },
-  fn:function(f){if(fresh){inp='';exEl.textContent='';fresh=false;}inp+=f+'(';draw();},
-  br:function(b){if(fresh){inp='';exEl.textContent='';fresh=false;}inp+=b;draw();},
-  cst:function(k){if(fresh){inp='';exEl.textContent='';fresh=false;}inp+=k==='pi'?Math.PI:Math.E;draw();},
-  pow2:function(){if(fresh){inp=ans.toString();exEl.textContent='';fresh=false;}if(inp){inp+='^2';draw();}},
-  fact:function(){if(fresh){inp=ans.toString();exEl.textContent='';fresh=false;}if(inp){inp+='!';draw();}},
-  xexp:function(){if(fresh){inp='';exEl.textContent='';fresh=false;}if(/\d/.test(inp.slice(-1))){inp+='e';draw();}},
-  pct:function(){if(fresh){inp=ans.toString();exEl.textContent='';fresh=false;}if(inp){inp+='/100';draw();}},
-  sign:function(){
-    if(fresh){ans=-ans;inp=ans.toString();draw();return;}
-    if(!inp||inp==='0')return;
-    var m=inp.match(/([\d.]+)$/);
-    if(m){var n=m[1],pos=inp.lastIndexOf(n),before=inp.substring(0,pos);
-      inp=before.endsWith('(-')?before.slice(0,-2)+n:before+'(-'+n+')';draw();}
-  },
-  calc:function(){
-    if(!inp)return;
+class ScientificCalculator {
+  constructor() {
+    this.currentInput='';this.displayExpression='';
+    this.expressionDisplay=document.getElementById('expression');
+    this.resultDisplay=document.getElementById('result');
+    this.lastAnswer=0;this.isNewCalculation=false;
+    this.setupKeyboard();this.updateDisplay();
+  }
+  updateDisplay(animate=false){
+    this.expressionDisplay.textContent=this.displayExpression||'';
+    this.resultDisplay.textContent=this.currentInput||'0';
+    if(animate){this.resultDisplay.classList.remove('number-entered');void this.resultDisplay.offsetWidth;this.resultDisplay.classList.add('number-entered');}
+  }
+  clearAll(){this.currentInput='';this.displayExpression='';this.isNewCalculation=false;this.updateDisplay(true);}
+  backspace(){
+    if(this.isNewCalculation){this.clearAll();return;}
+    if(this.currentInput.length>0){
+      const patterns=['sin(','cos(','tan(','log(','ln(','sqrt('];
+      for(let p of patterns){if(this.currentInput.endsWith(p)){this.currentInput=this.currentInput.slice(0,-p.length);this.updateDisplay(true);return;}}
+      this.currentInput=this.currentInput.slice(0,-1);this.updateDisplay(true);
+    }
+  }
+  addNumber(num){
+    if(this.isNewCalculation){this.currentInput='';this.displayExpression='';this.isNewCalculation=false;}
+    if(num==='.'){const last=this.currentInput.split(/[\+\-\*\/\(\)]/).pop();if(last.includes('.'))return;}
+    this.currentInput+=num;this.updateDisplay(true);
+  }
+  addOperator(op){
+    if(this.isNewCalculation){this.currentInput=this.lastAnswer.toString();this.displayExpression='';this.isNewCalculation=false;}
+    if(this.currentInput===''){if(op==='-'){this.currentInput='-';this.updateDisplay(true);}return;}
+    const lc=this.currentInput.slice(-1);
+    if(['+','-','*','/'].includes(lc)){this.currentInput=this.currentInput.slice(0,-1)+op;}else{this.currentInput+=op;}
+    this.updateDisplay(true);
+  }
+  addBracket(b){if(this.isNewCalculation){this.currentInput='';this.displayExpression='';this.isNewCalculation=false;}this.currentInput+=b;this.updateDisplay(true);}
+  addFunction(f){if(this.isNewCalculation){this.currentInput='';this.displayExpression='';this.isNewCalculation=false;}this.currentInput+=f+'(';this.updateDisplay(true);}
+  addConstant(c){if(this.isNewCalculation){this.currentInput='';this.displayExpression='';this.isNewCalculation=false;}this.currentInput+=c==='pi'?Math.PI:Math.E;this.updateDisplay(true);}
+  addPower(){if(this.isNewCalculation){this.currentInput=this.lastAnswer.toString();this.displayExpression='';this.isNewCalculation=false;}if(this.currentInput!==''){this.currentInput+='^2';this.updateDisplay(true);}}
+  addFactorial(){if(this.isNewCalculation){this.currentInput=this.lastAnswer.toString();this.displayExpression='';this.isNewCalculation=false;}if(this.currentInput!==''){this.currentInput+='!';this.updateDisplay(true);}}
+  addExp(){if(this.isNewCalculation){this.currentInput='';this.displayExpression='';this.isNewCalculation=false;}if(/\d/.test(this.currentInput.slice(-1))){this.currentInput+='e';this.updateDisplay(true);}}
+  addPercent(){if(this.isNewCalculation){this.currentInput=this.lastAnswer.toString();this.displayExpression='';this.isNewCalculation=false;}if(this.currentInput!==''){this.currentInput+='/100';this.updateDisplay(true);}}
+  toggleSign(){
+    if(this.isNewCalculation){this.lastAnswer=-this.lastAnswer;this.currentInput=this.lastAnswer.toString();this.updateDisplay(true);return;}
+    if(this.currentInput===''||this.currentInput==='0')return;
+    const m=this.currentInput.match(/([\d.]+)$/);
+    if(m){const num=m[1],pos=this.currentInput.lastIndexOf(num),before=this.currentInput.substring(0,pos);
+      this.currentInput=before.endsWith('(-')?before.slice(0,-2)+num:before+'(-'+num+')';this.updateDisplay(true);}
+  }
+  factorial(n){n=Math.floor(n);if(n<0)throw new Error('Factorial of negative number');if(n>170)return Infinity;if(n===0||n===1)return 1;let r=1;for(let i=2;i<=n;i++)r*=i;return r;}
+  safeEval(expr){
+    if(!/^[\d+\-*/.() ]+$/.test(expr))throw new Error('Invalid expression');
+    if(/\/\s*0(?!\d)/.test(expr))throw new Error('Division by zero');
+    return new Function('return ('+expr+')')();
+  }
+  evaluateExpression(expr){
     try{
-      exEl.textContent=inp;
-      var r=evaluate(inp);
-      var f=fmt(r);
-      rsEl.textContent=f;
-      ans=typeof r==='number'?r:0;
-      inp=f;fresh=true;
-    }catch(e){rsEl.textContent=e.message||'Error';inp='';fresh=true;}
+      expr=expr.replace(/\u00d7/g,'*').replace(/\u00f7/g,'/').replace(/\u2212/g,'-');
+      expr=expr.replace(/(\d+\.?\d*)e(\-?\d+)/gi,(m,b,e)=>(parseFloat(b)*Math.pow(10,parseFloat(e))).toString());
+      for(let i=0;i<100;i++){
+        let changed=false;
+        const rep=(re,fn)=>{expr=expr.replace(re,(m,a)=>{changed=true;return fn(this.safeEval(a)).toString();});};
+        rep(/sin\(([^()]+)\)/g,v=>Math.sin(v*Math.PI/180));
+        rep(/cos\(([^()]+)\)/g,v=>Math.cos(v*Math.PI/180));
+        rep(/tan\(([^()]+)\)/g,v=>Math.tan(v*Math.PI/180));
+        rep(/log\(([^()]+)\)/g,v=>{if(v<=0)throw new Error('Invalid log input');return Math.log10(v);});
+        rep(/ln\(([^()]+)\)/g,v=>{if(v<=0)throw new Error('Invalid ln input');return Math.log(v);});
+        rep(/sqrt\(([^()]+)\)/g,v=>{if(v<0)throw new Error('Invalid sqrt input');return Math.sqrt(v);});
+        expr=expr.replace(/(\d+\.?\d*)!/g,(m,n)=>{changed=true;return this.factorial(parseFloat(n)).toString();});
+        expr=expr.replace(/(\d+\.?\d*)\^(\d+\.?\d*)/g,(m,b,e)=>{changed=true;return Math.pow(parseFloat(b),parseFloat(e)).toString();});
+        if(!changed)break;
+      }
+      const result=this.safeEval(expr);
+      if(isNaN(result))throw new Error('Invalid calculation');
+      return isFinite(result)?result:'Infinity';
+    }catch(e){throw new Error('Error: '+e.message);}
   }
-};
-function seval(e){
-  if(!/^[\d+\-*/.() ]+$/.test(e))throw new Error('Invalid');
-  if(/\/\s*0(?!\d)/.test(e))throw new Error('Div by zero');
-  return new Function('return('+e+')')();
-}
-function factorial(n){
-  n=Math.floor(n);if(n<0)throw new Error('Negative factorial');
-  if(n>170)return Infinity;var r=1;for(var i=2;i<=n;i++)r*=i;return r;
-}
-function evaluate(expr){
-  expr=expr.replace(/\u00d7/g,'*').replace(/\u00f7/g,'/').replace(/\u2212/g,'-');
-  expr=expr.replace(/(\d+\.?\d*)e(\-?\d+)/gi,function(_,b,e){return (parseFloat(b)*Math.pow(10,parseFloat(e))).toString();});
-  for(var i=0;i<60;i++){
-    var ch=false;
-    function rep(re,fn){expr=expr.replace(re,function(_,a){ch=true;return fn(seval(a)).toString();});}
-    rep(/sin\(([^()]+)\)/g,function(v){return Math.sin(v*Math.PI/180);});
-    rep(/cos\(([^()]+)\)/g,function(v){return Math.cos(v*Math.PI/180);});
-    rep(/tan\(([^()]+)\)/g,function(v){return Math.tan(v*Math.PI/180);});
-    rep(/log\(([^()]+)\)/g,function(v){if(v<=0)throw new Error('log domain');return Math.log10(v);});
-    rep(/ln\(([^()]+)\)/g, function(v){if(v<=0)throw new Error('ln domain'); return Math.log(v);});
-    rep(/sqrt\(([^()]+)\)/g,function(v){if(v<0)throw new Error('sqrt domain');return Math.sqrt(v);});
-    expr=expr.replace(/(\d+\.?\d*)!/g,function(_,n){ch=true;return factorial(parseFloat(n)).toString();});
-    expr=expr.replace(/(\d+\.?\d*)\^(\d+\.?\d*)/g,function(_,b,e){ch=true;return Math.pow(parseFloat(b),parseFloat(e)).toString();});
-    if(!ch)break;
+  formatResult(num){
+    if(typeof num==='string')return num;
+    if(Math.abs(num)>1e10||(Math.abs(num)<1e-6&&num!==0))return num.toExponential(8);
+    return (Math.round(num*1e10)/1e10).toString();
   }
-  var r=seval(expr);
-  if(isNaN(r))throw new Error('Invalid');
-  return isFinite(r)?r:'Infinity';
+  calculate(){
+    if(this.currentInput==='')return;
+    this.resultDisplay.classList.add('calculating');
+    setTimeout(()=>{
+      try{
+        this.displayExpression=this.currentInput;
+        const result=this.evaluateExpression(this.currentInput);
+        this.currentInput=this.formatResult(result);
+        this.lastAnswer=typeof result==='number'?result:0;
+        this.isNewCalculation=true;this.updateDisplay(true);
+      }catch(error){
+        this.currentInput=error.message||'Error';this.isNewCalculation=true;
+        this.resultDisplay.classList.add('error');this.updateDisplay();
+        setTimeout(()=>this.resultDisplay.classList.remove('error'),400);
+      }
+      this.resultDisplay.classList.remove('calculating');
+    },200);
+  }
+  setupKeyboard(){
+    document.addEventListener('keydown',(e)=>{
+      if(e.key>='0'&&e.key<='9'){e.preventDefault();this.addNumber(e.key);}
+      else if(e.key==='.'){e.preventDefault();this.addNumber('.');}
+      else if(e.key==='+'){e.preventDefault();this.addOperator('+');}
+      else if(e.key==='-'){e.preventDefault();this.addOperator('-');}
+      else if(e.key==='*'){e.preventDefault();this.addOperator('*');}
+      else if(e.key==='/'){e.preventDefault();this.addOperator('/');}
+      else if(e.key==='Enter'||e.key==='='){e.preventDefault();this.calculate();}
+      else if(e.key==='Escape'||e.key==='c'||e.key==='C'){e.preventDefault();this.clearAll();}
+      else if(e.key==='Backspace'){e.preventDefault();this.backspace();}
+      else if(e.key==='('){e.preventDefault();this.addBracket('(');}
+      else if(e.key===')'){e.preventDefault();this.addBracket(')');}
+      else if(e.key==='%'){e.preventDefault();this.addPercent();}
+    });
+  }
 }
-function fmt(n){
-  if(typeof n==='string')return n;
-  if(Math.abs(n)>1e10||(Math.abs(n)<1e-6&&n!==0))return n.toExponential(6);
-  return (Math.round(n*1e10)/1e10).toString();
-}
-document.addEventListener('keydown',function(e){
-  var m={'Enter':function(){C.calc();},'=':function(){C.calc();},'Escape':function(){C.ac();},'Backspace':function(){C.del();},
-    '+':function(){C.op('+');},'*':function(){C.op('*');},'(':function(){C.br('(');},' )':function(){C.br(')');},'%':function(){C.pct();},'.':function(){C.num('.');}};
-  if(e.key==='-'){e.preventDefault();C.op('-');}
-  else if(e.key==='/'){e.preventDefault();C.op('/');}
-  else if(m[e.key]){e.preventDefault();m[e.key]();}
-  else if(e.key>='0'&&e.key<='9'){e.preventDefault();C.num(e.key);}
-});
+const calc=new ScientificCalculator();
 </script>
 </body>
 </html>
